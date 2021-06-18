@@ -18,6 +18,7 @@ Comparing to the initial request this project covers all requested features
 
 ## Steps to set up
 
+- `git clone https://github.com/lionwalker/mp3-converter.git`
 - `composer update`
 - `npm install & npm run dev`
 - _create a database and configure .env file_
