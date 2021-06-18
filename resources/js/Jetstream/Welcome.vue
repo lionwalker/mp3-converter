@@ -13,10 +13,10 @@
                     <jet-label for="file" value="File"/>
                     <jet-input id="file" type="file" class="mt-1 block w-full" @change="onFileChange" accept="audio/*" required/>
                 </div>
-                <div class="pt-4" v-show="this.progress_bar">
-                    <div class="relative pt-1">
-                        <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-indigo-200">
-                            <div :style="{width: this.progress + '%'}" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-500"></div>
+                <div class="pt-4" v-show="this.in_progress">
+                    <div class="demo-preview">
+                        <div class="progress progress-striped active">
+                            <div role="progressbar" style="width: 100%;" class="progress-bar"><span>Converting . . .</span></div>
                         </div>
                     </div>
                 </div>
@@ -79,11 +79,7 @@ export default {
             histories: [],
             completed: false,
             file_url: '',
-            progress: 0,
-            progress_bar: false,
-            invervalSpeed: 200,
-            incrementSpeed: 5,
-            progressInterval: 0,
+            in_progress: false,
         }
     },
 
@@ -91,31 +87,12 @@ export default {
         onFileChange(e) {
             this.file_url = ''
             this.completed = false
-            this.progress = 0
             this.form.file = e.target.files[0];
-        },
-        moveProgress()
-        {
-            let process = this.progress
-            let speed = this.incrementSpeed
-            console.log("1",this.progress)
-            this.progressInterval = setInterval(function(){
-                process = process + speed;
-                this.progress = process
-                console.log("2",this.progress)
-                if(process >= 100){
-                    process = 0
-                    this.progress = 0
-                    clearInterval(this.progressInterval);
-                }
-            }, this.invervalSpeed);
         },
         submit() {
             this.file_url = ''
             this.completed = false
-            this.progress_bar = true
-            this.progress = 0
-            this.moveProgress()
+            this.in_progress = true
 
             let currentObj = this;
             const config = {
@@ -126,17 +103,143 @@ export default {
             formData.append('name', this.form.name);
             axios.post(this.route('convert'), formData, config)
                 .then(response => (
-                    this.file_url = response.data, this.completed = true, this.progress_bar = false, clearInterval(this.progressInterval)
+                    this.file_url = response.data, this.completed = true, this.in_progress = false, this.getHistoryData()
                 ))
                 .catch(function (error) {
                     currentObj.output = error;
                 });
 
         },
+        getHistoryData() {
+            axios.post(this.route('history')).then(response => (this.histories = response.data))
+        }
     },
 
     mounted() {
-        axios.post(this.route('history')).then(response => (this.histories = response.data))
+        this.getHistoryData()
     }
 }
 </script>
+
+<style>
+.demo-preview {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    border-radius: 15px;
+}
+
+.progress {
+    background-color: #f5f5f5;
+    border-radius: 3px;
+    box-shadow: none;
+}
+.progress.progress-xs {
+    height: 5px;
+    margin-top: 5px;
+}
+.progress.progress-sm {
+    height: 10px;
+    margin-top: 5px;
+}
+.progress.progress-lg {
+    height: 25px;
+}
+.progress.vertical {
+    position: relative;
+    width: 20px;
+    height: 200px;
+    display: inline-block;
+    margin-right: 10px;
+}
+.progress.vertical > .progress-bar {
+    width: 100% !important;
+    position: absolute;
+    bottom: 0;
+}
+.progress.vertical.progress-xs {
+    width: 5px;
+    margin-top: 5px;
+}
+.progress.vertical.progress-sm {
+    width: 10px;
+    margin-top: 5px;
+}
+.progress.vertical.progress-lg {
+    width: 30px;
+}
+
+.progress-bar {
+    background-color: #2196f3;
+    box-shadow: none;
+}
+.progress-bar.text-left {
+    text-align: left;
+}
+.progress-bar.text-left span {
+    margin-left: 10px;
+}
+.progress-bar.text-right {
+    text-align: right;
+}
+.progress-bar.text-right span {
+    margin-right: 10px;
+}
+
+@-webkit-keyframes progress-bar-stripes {
+    from {
+        background-position: 40px 0;
+    }
+    to {
+        background-position: 0 0;
+    }
+}
+@keyframes progress-bar-stripes {
+    from {
+        background-position: 40px 0;
+    }
+    to {
+        background-position: 0 0;
+    }
+}
+.progress.active .progress-bar,
+.progress-bar.active {
+    -webkit-animation: progress-bar-stripes 2s linear infinite;
+    -o-animation: progress-bar-stripes 2s linear infinite;
+    animation: progress-bar-stripes 2s linear infinite;
+}
+
+.progress-striped .progress-bar,
+.progress-bar-striped {
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-size: 40px 40px;
+}
+
+.progress-bar-secondary {
+    background-color: #323a45;
+}
+
+.progress-bar-default {
+    background-color: #b0bec5;
+}
+
+.progress-bar-success {
+    background-color: #64dd17;
+}
+
+.progress-bar-info {
+    background-color: #29b6f6;
+}
+
+.progress-bar-warning {
+    background-color: #ffd600;
+}
+
+.progress-bar-danger {
+    background-color: #ef1c1c;
+}
+</style>
