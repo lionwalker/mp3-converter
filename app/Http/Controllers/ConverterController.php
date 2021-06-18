@@ -33,7 +33,7 @@ class ConverterController extends Controller
             'user_id' => $user_id,
         ]);
 
-        $api_key = env('CLOUDCONVERT_API_KEY','eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMjlhZGRlNTBkMDAyZWYxMWVmODEzNDA0ZThhNTFjZDRhZGEwODI5Yzg5ZDIwMzQ0MTU1ZGI0ZmQzNTU3NDg4ZWUyZDRhYzUyYTk0MDEwNWUiLCJpYXQiOjE2MjM4NTM0MTYuNTQ1NzUxLCJuYmYiOjE2MjM4NTM0MTYuNTQ1NzU0LCJleHAiOjQ3Nzk1MjcwMTYuNTA3OTM2LCJzdWIiOiI1MTgwMDA4NyIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.ExzpPQJ3LZrtH8nlJ02CSR1us8U3uPw3faMV4VM1hWZImGO7dT8X2Ioe2Q2UIy5-NxPRtEuzQNfiObYU3GmI1tnUmYR_csBipuL8uVwfTkJhH41faJDXs8SVAUzGKwifUAGMQFtdDpacUyLFRGCwtQx-K8m2vaEk1hmAcoY29c8mHdtDQb58jbpajByOgeLuVAl0e7TJlEEbvacY1-is1FkCkhY1_UX2HjNfz6RdafqPfIol8ZWuHsXfY5jKCdU2NinH-tPm9PbvamhCKqGCIc9MDPb_Wzq1hcJBanMKw7q6Cehf__u6zCsSktU__tDcP-13wmSQhwSyPGCngYh2bI6RCGg-fjSmEL49yETajpa3xKYmf7xnPxHonNLG0tAAANJXiYeRMnaSXhg9W0BOPAsSI1zt4R94GHLiL1wISwg8ofIy3pLIUPRyVdIoWHy379k03DBwmTcZN8iaWrM788JLOUML5Phx9mw8CS0a1bLWHiZxByf2foiTRwzGMMk_A3r-kaHGEUff-PkAVUipInmUlKg6h_dy9BL7OR29xyWW1q3OJjoRJvBXmQ2JQFxfD7KfiK33oShHtxtnJpVI13FZU8g9T0UBm1hawE_q0Cu3BSBfsYcn65CoPuPhIviyF3RyxFvzLPpJ75w-WNB2c1Yk8Rh19v7cg12dWXj4Z3A');
+        $api_key = env('CLOUDCONVERT_API_KEY','');
         $sandbox = env('CLOUDCONVERT_SANDBOX', true);
         $cloudconvert = new CloudConvert([
             'api_key' => $api_key,
@@ -86,7 +86,7 @@ class ConverterController extends Controller
             'api_key' => $api_key,
             'sandbox' => $sandbox
         ]);
-        $signingSecret = 'oVJrVlJee43XjxzjtJty8h1N8AwyW7lF';
+        $signingSecret = '';
         $payload = @file_get_contents('php://input');
         $signature = $_SERVER['HTTP_CLOUDCONVERT_SIGNATURE'];
         try {

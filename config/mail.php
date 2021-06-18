@@ -36,11 +36,11 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.gmail.com'),
-            'port' => env('MAIL_PORT', 465),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME','lahiru@mylinex.com'),
-            'password' => env('MAIL_PASSWORD','hhLahiru*'),
+            'host' => env('MAIL_HOST', ''),
+            'port' => env('MAIL_PORT', ),
+            'encryption' => env('MAIL_ENCRYPTION', ''),
+            'username' => env('MAIL_USERNAME',''),
+            'password' => env('MAIL_PASSWORD',''),
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -84,8 +84,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'lahiru@mylinex.com'),
-        'name' => env('MAIL_FROM_NAME', 'Lahiru Madusanka'),
+        'address' => env('MAIL_FROM_ADDRESS', ''),
+        'name' => env('MAIL_FROM_NAME', ''),
     ],
 
     /*
